@@ -26,82 +26,53 @@
     </style>
   </head>
   <body>
-    <div id="header">
-      <div class="card text-center">
-        <div class="card-header">
-          <ul class="nav nav-tabs card-header-tabs">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="true" href="#">Demo</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/calc.html">x</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled">x</a>
-            </li>
-          </ul>
-        </div>
-        <div class="card-body">
-          <h3>Welcome to Three.JS 3D CO2</h3>
-          <p>It is a way to visualize CO2 production</p>
+    <h3>Welcome to Three.JS 3D CO2</h3>
+    <p>It is a way to visualize CO2 production</p>
 
-          <button
-            id="Auto"
-            type="button"
-            class="btn btn-primary"
-            style="margin: 2px"
-          >
-            Car Commute (9,6 km) / Year
-          </button>
-          <button
-            id="Person"
-            type="button"
-            class="btn btn-primary"
-            style="margin: 2px"
-          >
-            Person (USA) / Year
-          </button>
-          <button
-            id="Beef"
-            type="button"
-            class="btn btn-primary"
-            style="margin: 2px"
-          >
-            10 kg Beef
-          </button>
+    <button id="Auto" type="button" class="btn btn-primary" style="margin: 2px">
+      Car Commute (9,6 km) / Year
+    </button>
+    <button
+      id="Person"
+      type="button"
+      class="btn btn-primary"
+      style="margin: 2px"
+    >
+      Person (USA) / Year
+    </button>
+    <button id="Beef" type="button" class="btn btn-primary" style="margin: 2px">
+      10 kg Beef
+    </button>
 
-          <br />
-          <span>Currently displayed:</span>
-          <b><span id="amount">1 Ton CO2</span></b>
+    <br />
+    <span>Currently displayed:</span>
+    <b><span id="amount">1 Ton CO2</span></b>
 
-          <hr />
+    <hr />
 
-          <h3>Calculate your yearly footprint</h3>
-          <p>Input data and see the changes</p>
+    <h3>Calculate your yearly footprint</h3>
+    <p>Input data and see the changes</p>
 
-          <label>Car Kilometers / Year</label>
-          <input type="number" id="car_commutes" min="0" />
-          <br />
+    <label>Car Kilometers / Year</label>
+    <input type="number" id="car_commutes" min="0" />
+    <br />
 
-          <label>Meat / Meal</label>
-          <input type="number" id="meat" min="0" />
-          <br />
+    <label>Meat / Meal</label>
+    <input type="number" id="meat" min="0" />
+    <br />
 
-          <label>Flights / Year</label>
-          <input type="number" id="" min="0" />
-          <br />
+    <label>Flights / Year</label>
+    <input type="number" id="" min="0" />
+    <br />
 
-          <br />
-          <span>Currently displayed:</span>
-          <b><span id="amount2">0</span></b>
-          <span>KG CO2</span>
+    <br />
+    <span>Currently displayed:</span>
+    <b><span id="amount2">0</span></b>
+    <span>KG CO2</span>
 
-          <br />
-          <label>Toggle rotation</label>
-          <input type="checkbox" id="myCheckbox" />
-        </div>
-      </div>
-    </div>
+    <br />
+    <label>Toggle rotation</label>
+    <input type="checkbox" id="myCheckbox" />
 
     <script src="public/bundle.js"></script>
     <script

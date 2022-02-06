@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 
 const scene = new THREE.Scene({ antialias: true })
-scene.background = new THREE.Color('#ADD8E6')
+//scene.background = new THREE.Color('#ADD8E6')
 let current_cube
 let current_cube_water
 const camera = new THREE.PerspectiveCamera(
@@ -14,7 +14,7 @@ const camera = new THREE.PerspectiveCamera(
   1000
 )
 
-const renderer = new THREE.WebGLRenderer()
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
 
 renderer.setSize(window.innerWidth, window.innerHeight)
 document.body.appendChild(renderer.domElement)
@@ -203,9 +203,9 @@ window.onload = function () {
     //ein Kilogramm CO2 ein Volumen von 509 Litern
 
     const new_geometry = new THREE.BoxGeometry(
-      edgeLength * 7.9843443826911 * overall_co2,
-      edgeLength * 7.9843443826911 * overall_co2,
-      edgeLength * 7.9843443826911 * overall_co2
+      edgeLength * overall_co2,
+      edgeLength * overall_co2,
+      edgeLength * overall_co2
     )
     current_cube = new THREE.Mesh(new_geometry, material)
     current_cube.position.set(-10 + -10, 9, 0)
