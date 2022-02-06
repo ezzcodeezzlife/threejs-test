@@ -1,28 +1,132 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="static/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="static/styles/main.css">
-    <title>Three.JS-Webpack Boilerplate</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="icon" href="static/favicon.ico" type="image/x-icon" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <title>3D CO2</title>
+    <style>
+      body {
+        margin: 0px;
+      }
+      /*
+      #header{
+        height: 20vh;
+      }
+      */
+    </style>
   </head>
   <body>
-    <!-- Information modal -->
-    <a id="open-modal-btn" class="float">
-      <i class="icon-float material-icons">menu</i>
-    </a>
-    <div id="info-modal" class="modal">
-      <div class="modal-content">
-        <span class="close-modal-btn">&times;</span>
-        <h3>Welcome to my Three.JS-Webpack boilerplate!</h3>
-        <p>It is a great and easy way to bootstrap Three.Js project.</p>
-        <p>To get started clone the repo <code>git clone https://github.com/aakatev/three-js-webpack.git</code>.</p>
-        <p>For more information, navigate to the <a href="https://github.com/aakatev/three-js-webpack">project GitHub page</a>!</p>
+    <div id="header">
+      <div class="card text-center">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="true" href="#">Demo</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/calc.html">x</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled">x</a>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body">
+          <h3>Welcome to Three.JS 3D CO2</h3>
+          <p>It is a way to visualize CO2 production</p>
+
+          <button
+            id="Auto"
+            type="button"
+            class="btn btn-primary"
+            style="margin: 2px;"
+          >
+            Car Commute (9,6 km) / Year
+          </button>
+          <button
+            id="Person"
+            type="button"
+            class="btn btn-primary"
+            style="margin: 2px;"
+          >
+            Person (USA) / Year
+          </button>
+          <button
+            id="Beef"
+            type="button"
+            class="btn btn-primary"
+            style="margin: 2px;"
+          >
+            10 kg Beef
+          </button>
+
+          <br />
+          <span>Currently displayed:</span>
+          <b><span id="amount">1 Ton CO2</span></b>
+          
+           
+          <hr>
+          
+          <h3>Calculate your yearly footprint</h3>
+          <p>Input data and see the changes</p>
+
+      
+
+          <label>Car Kilometers / Year</label>
+          <input
+            type="number"
+            id="car_commutes"
+            min="0"
+          />
+          <br />
+
+          
+          <label>Meat / Meal</label>
+          <input
+            type="number"
+            id="meat"
+            min="0"
+          />
+          <br />
+
+          <label>Flights / Year</label>
+          <input
+            type="number"
+            id=""
+            min="0"
+          />
+          <br />
+
+
+          <br>
+          <span>Currently displayed:</span>
+          <b><span id="amount2">0</span></b>
+          <span >KG CO2</span>
+
+
+          <br />
+          <label>Toggle rotation</label>
+          <input type="checkbox" id="myCheckbox" />
+          
+        </div>
       </div>
     </div>
-    <!-- End information modal -->
 
     <script src="public/bundle.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

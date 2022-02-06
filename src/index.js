@@ -1,174 +1,245 @@
+import './initFirebase.js'
 import * as THREE from 'three'
-import { WEBGL } from './webgl'
-import './modal'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 
-if (WEBGL.isWebGLAvailable()) {
-  var camera, scene, renderer
-  var plane
-  var mouse,
-    raycaster,
-    isShiftDown = false
+const scene = new THREE.Scene({ antialias: true })
+scene.background = new THREE.Color('#ADD8E6')
+let current_cube
+let current_cube_water
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+)
 
-  var rollOverMesh, rollOverMaterial
-  var cubeGeo, cubeMaterial
+const renderer = new THREE.WebGLRenderer()
 
-  var objects = []
+renderer.setSize(window.innerWidth, window.innerHeight)
+document.body.appendChild(renderer.domElement)
 
-  init()
-  render()
+const controls = new OrbitControls(camera, renderer.domElement)
 
-  function init() {
-    camera = new THREE.PerspectiveCamera(
-      45,
-      window.innerWidth / window.innerHeight,
-      1,
-      10000
-    )
-    camera.position.set(500, 800, 1300)
-    camera.lookAt(0, 0, 0)
+//plain
+var geo = new THREE.PlaneBufferGeometry(140, 140, 8, 8)
+const texture = new THREE.TextureLoader().load('grass.jpg')
+const mat = new THREE.MeshBasicMaterial({ map: texture })
 
-    scene = new THREE.Scene()
-    scene.background = new THREE.Color(0xf0f0f0)
+var plane = new THREE.Mesh(geo, mat)
+plane.rotateX(-Math.PI / 2)
+plane.position.set(0, -2.5, 0)
+scene.add(plane)
 
-    var rollOverGeo = new THREE.BoxBufferGeometry(50, 50, 50)
-    rollOverMaterial = new THREE.MeshBasicMaterial({
-      color: 0xff0000,
-      opacity: 0.5,
-      transparent: true,
-    })
-    rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial)
-    scene.add(rollOverMesh)
+//77 a = 381 m
+//:381
+// 0,202099737 a = 1m
 
-    cubeGeo = new THREE.BoxBufferGeometry(50, 50, 50)
-    cubeMaterial = new THREE.MeshLambertMaterial({
-      color: 0xfeb74c,
-      map: new THREE.TextureLoader().load('static/textures/square.png'),
-    })
+//box 2
+const edgeLength = 0.202099737 * 8 //for one ton
+const geometry2 = new THREE.BoxGeometry(edgeLength, edgeLength, edgeLength)
 
-    var gridHelper = new THREE.GridHelper(1000, 20)
-    scene.add(gridHelper)
+const material = new THREE.MeshBasicMaterial({ color: '#1c1c1c' })
 
-    raycaster = new THREE.Raycaster()
-    mouse = new THREE.Vector2()
+const firstCube = new THREE.Mesh(geometry2, material)
+firstCube.position.set(-10, -2, 0)
+scene.add(firstCube)
 
-    var geometry = new THREE.PlaneBufferGeometry(1000, 1000)
-    geometry.rotateX(-Math.PI / 2)
+//light
+const light = new THREE.PointLight(0x8f8f8f, 2, 100)
+light.position.set(10, 10, 10)
+scene.add(light)
 
-    plane = new THREE.Mesh(
-      geometry,
-      new THREE.MeshBasicMaterial({ visible: false })
-    )
-    scene.add(plane)
+//light2
+const light2 = new THREE.PointLight(0x8f8f8f, 2, 100)
+light2.position.set(-10, 10, -10)
+scene.add(light2)
 
-    objects.push(plane)
-
-    var ambientLight = new THREE.AmbientLight(0x606060)
-    scene.add(ambientLight)
-
-    var directionalLight = new THREE.DirectionalLight(0xffffff)
-    directionalLight.position.set(1, 0.75, 0.5).normalize()
-    scene.add(directionalLight)
-
-    renderer = new THREE.WebGLRenderer({ antialias: true })
-    renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    document.body.appendChild(renderer.domElement)
-
-    document.addEventListener('mousemove', onDocumentMouseMove, false)
-    document.addEventListener('mousedown', onDocumentMouseDown, false)
-    document.addEventListener('keydown', onDocumentKeyDown, false)
-    document.addEventListener('keyup', onDocumentKeyUp, false)
-    window.addEventListener('resize', onWindowResize, false)
+const objLoader = new OBJLoader()
+objLoader.load(
+  'es.obj',
+  (object) => {
+    // (object.children[0] as THREE.Mesh).material = material
+    // object.traverse(function (child) {
+    //     if ((child as THREE.Mesh).isMesh) {
+    //         (child as THREE.Mesh).material = material
+    //     }
+    // })
+    object.scale.setScalar(0.001)
+    object.rotateX(-Math.PI / 2)
+    object.position.set(0, -3, 0)
+    scene.add(object)
+  },
+  (xhr) => {
+    console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+  },
+  (error) => {
+    console.log(error)
   }
+)
 
-  function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight
-    camera.updateProjectionMatrix()
+//camera
+camera.position.z = 80
+camera.position.y = 20
+controls.autoRotate = true
+controls.enablePan = false
 
-    renderer.setSize(window.innerWidth, window.innerHeight)
-  }
+function animate() {
+  requestAnimationFrame(animate)
 
-  function onDocumentMouseMove(event) {
-    event.preventDefault()
+  controls.update()
 
-    mouse.set(
-      (event.clientX / window.innerWidth) * 2 - 1,
-      -(event.clientY / window.innerHeight) * 2 + 1
-    )
-
-    raycaster.setFromCamera(mouse, camera)
-
-    var intersects = raycaster.intersectObjects(objects)
-
-    if (intersects.length > 0) {
-      var intersect = intersects[0]
-
-      rollOverMesh.position.copy(intersect.point).add(intersect.face.normal)
-      rollOverMesh.position
-        .divideScalar(50)
-        .floor()
-        .multiplyScalar(50)
-        .addScalar(25)
-    }
-
-    render()
-  }
-
-  function onDocumentMouseDown(event) {
-    event.preventDefault()
-
-    mouse.set(
-      (event.clientX / window.innerWidth) * 2 - 1,
-      -(event.clientY / window.innerHeight) * 2 + 1
-    )
-
-    raycaster.setFromCamera(mouse, camera)
-
-    var intersects = raycaster.intersectObjects(objects)
-
-    if (intersects.length > 0) {
-      var intersect = intersects[0]
-
-      if (isShiftDown) {
-        if (intersect.object !== plane) {
-          scene.remove(intersect.object)
-
-          objects.splice(objects.indexOf(intersect.object), 1)
-        }
-
-      } else {
-        var voxel = new THREE.Mesh(cubeGeo, cubeMaterial)
-        voxel.position.copy(intersect.point).add(intersect.face.normal)
-        voxel.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25)
-        scene.add(voxel)
-
-        objects.push(voxel)
-      }
-
-      render()
-    }
-  }
-
-  function onDocumentKeyDown(event) {
-    switch (event.keyCode) {
-      case 16:
-        isShiftDown = true
-        break
-    }
-  }
-
-  function onDocumentKeyUp(event) {
-    switch (event.keyCode) {
-      case 16:
-        isShiftDown = false
-        break
-    }
-  }
-
-  function render() {
-    renderer.render(scene, camera)
-  }
-} else {
-  var warning = WEBGL.getWebGLErrorMessage()
-  document.body.appendChild(warning)
+  renderer.render(scene, camera)
 }
+
+const removeOldCube = () => {
+  try {
+    scene.remove(current_cube)
+    scene.remove(firstCube)
+    scene.remove(current_cube_water)
+  } catch {
+    console.log('no cubes')
+  }
+}
+
+window.onload = function () {
+  const checkbox = document.getElementById('myCheckbox')
+  checkbox.addEventListener('change', (event) => {
+    if (event.currentTarget.checked) {
+      controls.autoRotate = false
+    } else {
+      controls.autoRotate = true
+    }
+  })
+
+  //Car
+  const element = document.getElementById('Auto')
+  element.addEventListener('click', function () {
+    document.getElementById('amount').innerHTML = '379 kg CO2'
+
+    removeOldCube()
+    const new_geometry = new THREE.BoxGeometry(
+      edgeLength * 0.379,
+      edgeLength * 0.379,
+      edgeLength * 0.379
+    )
+
+    current_cube = new THREE.Mesh(new_geometry, material)
+    current_cube.position.set(-10, -2, 0)
+
+    scene.add(current_cube)
+  })
+
+  //Person
+  const element2 = document.getElementById('Person')
+  element2.addEventListener('click', function () {
+    document.getElementById('amount').innerHTML = '14.24 Tons CO2 & x L Water'
+
+    removeOldCube()
+
+    //co2
+    const new_geometry = new THREE.BoxGeometry(
+      edgeLength * 14.25,
+      edgeLength * 14.25,
+      edgeLength * 14.25
+    )
+    current_cube = new THREE.Mesh(new_geometry, material)
+    current_cube.position.set(-10 + -10, 9, 0)
+    scene.add(current_cube)
+
+    //water
+    // 0,202099737 a = 1m
+    const new_geometry2 = new THREE.BoxGeometry(
+      0.202099737 * 5.5178483527622 * 10,
+      0.202099737 * 5.5178483527622 * 10,
+      0.202099737 * 5.5178483527622 * 10
+    )
+    const water_material = new THREE.MeshBasicMaterial({ color: '#0394fc' })
+    current_cube_water = new THREE.Mesh(new_geometry2, water_material)
+    current_cube_water.position.set(14, 2, 0)
+    scene.add(current_cube_water)
+  })
+
+  //Beef
+  const element3 = document.getElementById('Beef')
+  element3.addEventListener('click', function () {
+    document.getElementById('amount').innerHTML = '123 kg CO2 & 150.415 L Water'
+
+    removeOldCube()
+
+    //co2
+    const new_geometry = new THREE.BoxGeometry(
+      edgeLength * 0.123,
+      edgeLength * 0.123,
+      edgeLength * 0.123
+    )
+    current_cube = new THREE.Mesh(new_geometry, material)
+    current_cube.position.set(-10, -2, 0)
+    scene.add(current_cube)
+
+    //water
+    // 0,202099737 a = 1m
+    const new_geometry2 = new THREE.BoxGeometry(
+      0.202099737 * 2.4662120743305 * 10,
+      0.202099737 * 2.4662120743305 * 10,
+      0.202099737 * 2.4662120743305 * 10
+    )
+    const water_material = new THREE.MeshBasicMaterial({ color: '#0394fc' })
+    current_cube_water = new THREE.Mesh(new_geometry2, water_material)
+    current_cube_water.position.set(10, 0, 0)
+    scene.add(current_cube_water)
+  })
+
+
+  //calc
+
+  let overall_co2 = 0
+  //calc
+  function update_overall_text() {
+    document.getElementById('amount2').innerHTML = overall_co2
+  }
+  function update_3d() {
+    removeOldCube()
+    
+    //ein Kilogramm CO2 ein Volumen von 509 Litern
+
+    const new_geometry = new THREE.BoxGeometry(
+      edgeLength * 7.9843443826911 * overall_co2,
+      edgeLength * 7.9843443826911 * overall_co2,
+      edgeLength * 7.9843443826911 * overall_co2
+    )
+    current_cube = new THREE.Mesh(new_geometry, material)
+    current_cube.position.set(-10 + -10, 9, 0)
+    scene.add(current_cube)
+
+  }
+
+
+  //kilometers car
+  var myelem = document.getElementById('car_commutes');
+  myelem.addEventListener("change", function(){
+    console.log("yoo change")
+    const x = document.getElementById('car_commutes').value
+    const co2_amount = x * 0.13
+    overall_co2 += co2_amount
+
+    update_overall_text()
+    update_3d()
+  })
+
+  //meat
+  var myelem = document.getElementById('car_commutes');
+  myelem.addEventListener("change", function(){
+    console.log("yoo change")
+    const x = document.getElementById('car_commutes').value
+    const co2_amount = x * 0.13
+    overall_co2 += co2_amount
+
+    update_overall_text()
+    
+  })
+
+
+}
+
+animate()
