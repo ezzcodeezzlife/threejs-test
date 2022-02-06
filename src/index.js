@@ -190,7 +190,6 @@ window.onload = function () {
     scene.add(current_cube_water)
   })
 
-
   //calc
 
   let overall_co2 = 0
@@ -200,7 +199,7 @@ window.onload = function () {
   }
   function update_3d() {
     removeOldCube()
-    
+
     //ein Kilogramm CO2 ein Volumen von 509 Litern
 
     const new_geometry = new THREE.BoxGeometry(
@@ -211,14 +210,12 @@ window.onload = function () {
     current_cube = new THREE.Mesh(new_geometry, material)
     current_cube.position.set(-10 + -10, 9, 0)
     scene.add(current_cube)
-
   }
 
-
   //kilometers car
-  var myelem = document.getElementById('car_commutes');
-  myelem.addEventListener("change", function(){
-    console.log("yoo change")
+  var myelem = document.getElementById('car_commutes')
+  myelem.addEventListener('change', function () {
+    console.log('yoo change')
     const x = document.getElementById('car_commutes').value
     const co2_amount = x * 0.13
     overall_co2 += co2_amount
@@ -228,18 +225,15 @@ window.onload = function () {
   })
 
   //meat
-  var myelem = document.getElementById('car_commutes');
-  myelem.addEventListener("change", function(){
-    console.log("yoo change")
+  var myelem = document.getElementById('car_commutes')
+  myelem.addEventListener('change', function () {
+    console.log('yoo change')
     const x = document.getElementById('car_commutes').value
     const co2_amount = x * 0.13
     overall_co2 += co2_amount
 
     update_overall_text()
-    
   })
-
-
 }
 
 animate()
