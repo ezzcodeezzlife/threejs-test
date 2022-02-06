@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "start": "webpack-dev-server --mode development",
-    "format": "prettier --write **/*.{js,html}"
+    "format": "prettier --write **/*.{js,html}",
+    "deploy": "prettier --write **/*.{js,html} && webpack --config webpack.config.js && firebase deploy"
   },
   "keywords": [],
   "author": "",

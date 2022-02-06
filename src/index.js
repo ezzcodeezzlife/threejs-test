@@ -52,7 +52,7 @@ scene.add(light)
 
 //light2
 const light2 = new THREE.PointLight(0x8f8f8f, 2, 100)
-light2.position.set(-10, 10, -10)
+light2.position.set(-10, 15, -10)
 scene.add(light2)
 
 const objLoader = new OBJLoader()
