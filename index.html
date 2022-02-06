@@ -26,54 +26,65 @@
     </style>
   </head>
   <body>
-    <h3>Welcome to Three.JS 3D CO2</h3>
-    <p>It is a way to visualize CO2 production</p>
+    <center>
+      <h3>Welcome to Three.JS 3D CO2</h3>
+      <p>It is a way to visualize CO2 production</p>
 
-    <button id="Auto" type="button" class="btn btn-primary" style="margin: 2px">
-      Car Commute (9,6 km) / Year
-    </button>
-    <button
-      id="Person"
-      type="button"
-      class="btn btn-primary"
-      style="margin: 2px"
-    >
-      Person (USA) / Year
-    </button>
-    <button id="Beef" type="button" class="btn btn-primary" style="margin: 2px">
-      10 kg Beef
-    </button>
+      <button
+        id="Auto"
+        type="button"
+        class="btn btn-primary"
+        style="margin: 2px"
+      >
+        Car Commute (9,6 km) / Year
+      </button>
+      <button
+        id="Person"
+        type="button"
+        class="btn btn-primary"
+        style="margin: 2px"
+      >
+        Person (USA) / Year
+      </button>
+      <button
+        id="Beef"
+        type="button"
+        class="btn btn-primary"
+        style="margin: 2px"
+      >
+        10 kg Beef
+      </button>
 
-    <br />
-    <span>Currently displayed:</span>
-    <b><span id="amount">1 Ton CO2</span></b>
+      <br />
+      <span>Currently displayed:</span>
+      <b><span id="amount">1 Ton CO2</span></b>
 
-    <hr />
+      <hr />
 
-    <h3>Calculate your yearly footprint</h3>
-    <p>Input data and see the changes</p>
+      <h3>Calculate your yearly footprint</h3>
+      <p>Input data and see the changes</p>
 
-    <label>Car Kilometers / Year</label>
-    <input type="number" id="car_commutes" min="0" />
-    <br />
+      <label>Car Kilometers / Year</label>
+      <input type="number" id="car_commutes" min="0" />
+      <br />
 
-    <label>Meat / Meal</label>
-    <input type="number" id="meat" min="0" />
-    <br />
+      <label>Meat / Meal</label>
+      <input type="number" id="meat" min="0" />
+      <br />
 
-    <label>Flights / Year</label>
-    <input type="number" id="" min="0" />
-    <br />
+      <label>Flights / Year</label>
+      <input type="number" id="" min="0" />
+      <br />
 
-    <br />
-    <span>Currently displayed:</span>
-    <b><span id="amount2">0</span></b>
-    <span>KG CO2</span>
+      <br />
+      <span>Currently displayed:</span>
+      <b><span id="amount2">0</span></b>
+      <span>KG CO2</span>
 
-    <br />
-    <label>Toggle rotation</label>
-    <input type="checkbox" id="myCheckbox" />
-
+      <br />
+      <label>Toggle rotation</label>
+      <input type="checkbox" id="myCheckbox" />
+    </center>
     <script src="public/bundle.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
